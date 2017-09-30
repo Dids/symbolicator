@@ -10,6 +10,8 @@ class Settings: GBSettings {
 		// First setup factory defaults.
 		let defaults = Settings(name: "Factory Defaults")
 		defaults.xcodeArchivesFolder = "~/Library/Developer/Xcode/Archives"
+        defaults.applicationBinaryPath = ""
+        defaults.applicationDsymPath = ""
 		
 		// Now return the settings using factory defaults as their parent
 		super.init(name: "FactoryDefaults", parent: defaults)
@@ -20,9 +22,19 @@ class Settings: GBSettings {
 	}
 	
 	var xcodeArchivesFolder: String {
-		get { return object(forKey: settingXcodeArchivesKey) as! String }
-		set { setObject(newValue, forKey: settingXcodeArchivesKey) }
+		get { return object(forKey: settingXcodeArchivesFolderKey) as! String }
+		set { setObject(newValue, forKey: settingXcodeArchivesFolderKey) }
 	}
+    
+    var applicationBinaryPath: String {
+        get { return object(forKey: settingApplicationBinaryPathKey) as! String }
+        set { setObject(newValue, forKey: settingApplicationBinaryPathKey) }
+    }
+    
+    var applicationDsymPath: String {
+        get { return object(forKey: settingApplicationDsymPathKey) as! String }
+        set { setObject(newValue, forKey: settingApplicationDsymPathKey) }
+    }
 	
 	var dryRun: Bool {
 		get { return bool(forKey: settingsDryRunKey) }
@@ -40,7 +52,9 @@ class Settings: GBSettings {
 	}
 }
 
-let settingXcodeArchivesKey = "archives"
+let settingXcodeArchivesFolderKey = "archives"
+let settingApplicationBinaryPathKey = "binary"
+let settingApplicationDsymPathKey = "dsym"
 let settingsDryRunKey = "dryrun"
 let settingsPrintVerboseKey = "verbose"
 let settingsPrintHelpKey = "help"

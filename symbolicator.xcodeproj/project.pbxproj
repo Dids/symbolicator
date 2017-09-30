@@ -129,11 +129,13 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 73261506194577F500DC069E /* Build configuration list for PBXNativeTarget "symbolicator" */;
 			buildPhases = (
-				E90AD747AA62416EBD425C82 /* Check Pods Manifest.lock */,
 				732614FB194577F500DC069E /* Sources */,
 				732614FC194577F500DC069E /* Frameworks */,
 				732614FD194577F500DC069E /* CopyFiles */,
+				E90AD747AA62416EBD425C82 /* Check Pods Manifest.lock */,
 				C298F9506ADC4507AAB3BFFA /* Copy Pods Resources */,
+				073C71811F2DD13600A5FD7E /* Show warnings for TODO, FIXME, HACK */,
+				073C71801F2DCDB800A5FD7E /* Update symlink at /usr/local/bin */,
 			);
 			buildRules = (
 			);
@@ -179,6 +181,34 @@
 /* End PBXProject section */
 
 /* Begin PBXShellScriptBuildPhase section */
+		073C71801F2DCDB800A5FD7E /* Update symlink at /usr/local/bin */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Update symlink at /usr/local/bin";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/bash;
+			shellScript = "set -e\nset -o pipefail\nln -sfn ${BUILT_PRODUCTS_DIR}/${EXECUTABLE_NAME} /usr/local/bin/${EXECUTABLE_NAME}";
+		};
+		073C71811F2DD13600A5FD7E /* Show warnings for TODO, FIXME, HACK */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Show warnings for TODO, FIXME, HACK";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/bash;
+			shellScript = "set -e\nset -o pipefail\nKEYWORDS=\"TODO|FIXME|HACK|\\?\\?\\?:|\\!\\!\\!:\"\nfind \"${SRCROOT}\" \\( -name \"*.swift\" \\) -print0 | \\\nxargs -0 egrep --with-filename --line-number --only-matching \"($KEYWORDS).*\\$\" | \\\nperl -p -e \"s/($KEYWORDS)/ warning: \\$1/\"";
+		};
 		C298F9506ADC4507AAB3BFFA /* Copy Pods Resources */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -240,6 +270,7 @@
 				CLANG_WARN_BOOL_CONVERSION = YES;
 				CLANG_WARN_CONSTANT_CONVERSION = YES;
 				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
 				CLANG_WARN_EMPTY_BODY = YES;
 				CLANG_WARN_ENUM_CONVERSION = YES;
 				CLANG_WARN_INFINITE_RECURSION = YES;
@@ -285,6 +316,7 @@
 				CLANG_WARN_BOOL_CONVERSION = YES;
 				CLANG_WARN_CONSTANT_CONVERSION = YES;
 				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
 				CLANG_WARN_EMPTY_BODY = YES;
 				CLANG_WARN_ENUM_CONVERSION = YES;
 				CLANG_WARN_INFINITE_RECURSION = YES;
@@ -299,6 +331,7 @@
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_SYMBOLS_PRIVATE_EXTERN = YES;
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
 				GCC_WARN_UNDECLARED_SELECTOR = YES;
@@ -316,6 +349,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = B6BA76753D3441E88F04772E /* Pods.xcconfig */;
 			buildSettings = {
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
 				OTHER_LDFLAGS = "";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_OBJC_BRIDGING_HEADER = "symbolicator/symbolicator-Bridging-Header.h";
@@ -327,6 +361,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = B6BA76753D3441E88F04772E /* Pods.xcconfig */;
 			buildSettings = {
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
 				OTHER_LDFLAGS = "";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_OBJC_BRIDGING_HEADER = "symbolicator/symbolicator-Bridging-Header.h";

@@ -8,10 +8,10 @@ Copyright (c) 2014 Gentle Bytes. All rights reserved.
 import Foundation
 
 class Symbolicator {
-	func symbolicate(_ files: Array<String>, archivesPath: String) {
+	func symbolicate(_ files: Array<String>, archivesPath: String, binaryPath: String, dsymPath: String) {
 		print("Symbolizing \(files.count) crash logs...")
 		
-		let archiveHandler = ArchiveHandler(path: archivesPath)
+        let archiveHandler = ArchiveHandler(path: archivesPath, binaryPath: binaryPath, dsymPath: dsymPath)
 		let symbolicator = FileSymbolicator()
 		
 		for filename in files {
@@ -27,9 +27,10 @@ class Symbolicator {
 			// Load contents of the file into string and bail out if it doesn't work.
 			do {
 				let original = try String(contentsOfFile:path, encoding: String.Encoding.utf8)
-				
+                
 				// Symbolicate the crash log.
-				if let symbolized = symbolicator.symbolicate(filename, contents: original, archiveHandler: archiveHandler) {
+                if let symbolized = symbolicator.symbolicate(filename, contents: original.replacingOccurrences(of: "\t", with: "  "), archiveHandler: archiveHandler) { // TODO: Dids added this
+				//if let symbolized = symbolicator.symbolicate(filename, contents: original, archiveHandler: archiveHandler) {
 					if settings.dryRun {
 						continue
 					}

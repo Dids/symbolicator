@@ -64,6 +64,7 @@ class FileSymbolicator {
 		var result = contents
 		numberOfSymbolizedAddresses = 0
 		for match in matches {
+            print("Symbolicating line: \(match.value)") // TODO: Remove
 			// Add delimiter above each symbolication when verbose mode is on.
 			if settings.printVerbose {
 				print("")
@@ -72,6 +73,7 @@ class FileSymbolicator {
 			// Prepare binary and base address.
 			let binary = (match.groups[1] as! RxMatchGroup).value!.trimmingCharacters(in: whitespace)
 			guard let baseAddress = baseAddressForSymbolication(contents, identifier: binary) else {
+                print("> \(binary): failed to parse base address") // TODO: Remove
 				continue
 			}
 			
@@ -80,6 +82,7 @@ class FileSymbolicator {
 				print("> \(binary): missing DWARF file!")
 				continue
 			}
+            print("dwarfPath: \(dwarfPath)") // TODO: Remove
 			
 			// Symbolicate addresses.
 			let address = (match.groups[2] as! RxMatchGroup).value!
@@ -191,18 +194,23 @@ class FileSymbolicator {
 	}
 	
 	fileprivate func baseAddressForSymbolication(_ contents: String, identifier: String) -> String? {
+        print("baseAddressForSymbolication") // TODO: Remove
 		// First attempt to find the whole identifier.
-		let pattern = "^\\s+(0x[0-9a-fA-F]+)\\s+-\\s+(0x[0-9a-fA-F]+)\\s+[+]?\(identifier)\\s+"
+		let pattern = "^\\s?+(0x[0-9a-fA-F]+)\\s?+-\\s+(0x[0-9a-fA-F]+)\\s?+[+]?\(identifier)\\s?+"
 		if let regex = pattern.toRx(options: .anchorsMatchLines), let match = regex.firstMatch(withDetails: contents) {
+            print("found line with identifier") // TODO: Remove
 			return (match.groups[1] as! RxMatchGroup).value
 		}
+        
+        print("failed to find identifier, using fallback") // TODO: Remove
 		
 		// If this fails, fall down to generic search for binaries that include the given identifier.
-		let falldownPattern = "^\\s+(0x[0-9a-fA-F]+)\\s+-\\s+(0x[0-9a-fA-F]+)\\s+[+]?([^\\s]+)\\s+"
+		let falldownPattern = "^\\s?+(0x[0-9a-fA-F]+)\\s?+-\\s?+(0x[0-9a-fA-F]+)\\s?+[+]?([^\\s?]+)\\s?+"
 		if let regex = falldownPattern.toRx(options: .anchorsMatchLines), let matches = regex.matches(withDetails: contents) {
 			for match in matches as! [RxMatch] {
 				let binary = (match.groups[3] as! RxMatchGroup).value
 				if (binary?.contains(identifier))! {
+                    print("found line with identifier") // TODO: Remove
 					return (match.groups[1] as! RxMatchGroup).value
 				}
 			}
